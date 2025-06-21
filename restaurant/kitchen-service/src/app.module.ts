@@ -7,7 +7,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 @Module({
   imports: [
     RabbitMQModule.forRoot({
-      uri: 'amqp://guest:guest@localhost:5672',
+      uri: 'amqp://guest:guest@rabbitmq:5672',
       exchanges: [
         {
           name: 'order.exchange',
