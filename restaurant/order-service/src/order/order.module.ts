@@ -4,10 +4,21 @@ import { Order } from './order.entity';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
 import { Menu } from '../menu/menu.entity';
-import { SharedModule } from 'src/shared/shared.module';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, Menu]), SharedModule],
+  imports: [
+    RabbitMQModule.forRoot({
+      uri: 'amqp://guest:guest@localhost:5672',
+      exchanges: [
+        {
+          name: 'order.exchange',
+          type: 'fanout',
+        },
+      ],
+    }),
+    TypeOrmModule.forFeature([Order, Menu]),
+  ],
   providers: [OrderService],
   controllers: [OrderController],
 })

@@ -1,9 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './order.entity';
 import { Menu } from '../menu/menu.entity';
 import { In, Repository } from 'typeorm';
-import { ClientProxy } from '@nestjs/microservices';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 @Injectable()
 export class OrderService {
@@ -12,11 +12,8 @@ export class OrderService {
     private orderRepository: Repository<Order>,
     @InjectRepository(Menu)
     private menuRepository: Repository<Menu>,
-    @Inject('ORDER_PUBLISHER')
-    private client: ClientProxy,
-  ) {
-    void this.client.connect();
-  }
+    private readonly amqpConnection: AmqpConnection,
+  ) {}
 
   async placeOrder(menuIds: number[], customerEmail: string): Promise<Order> {
     const menus = await this.menuRepository.find({
@@ -34,8 +31,8 @@ export class OrderService {
     const savedOrder = await this.orderRepository.save(order);
 
     // Pakai emit untuk broadcast
-    this.client.emit('order.created', savedOrder);
     console.log('📦 Order created:', savedOrder);
+    await this.amqpConnection.publish('order.exchange', '', savedOrder);
 
     return savedOrder;
   }
