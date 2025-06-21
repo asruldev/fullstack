@@ -1,0 +1,20 @@
+There are three light switches in the room where you are standing. In the adjacent
+room, three incandescent light bulbs are controlled by each of these switches. You
+are informed that all of the light bulbs in the other room are off, and all of the
+switches are originally down and in the off position.
+How can you figure out which switches match which light bulbs if you are only given
+one chance to enter the room with them?
+
+Step:
+1. Turn ON the first switch.
+Leave it ON for a few minutes so the connected bulb gets hot.
+
+2. After a few minutes, turn OFF the first switch and turn ON the second switch.
+Do this right before you go into the bulb room.
+
+3. Leave the third switch OFF.
+
+4. When you enter the bulb room:
+The bulb that is ON belongs to the second switch.
+The bulb that is OFF but WARM belongs to the first switch.
+The bulb that is OFF and COLD belongs to the third switch.

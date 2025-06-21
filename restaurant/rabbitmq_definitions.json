@@ -1,0 +1,23 @@
+{
+  "exchanges": [
+    { "name": "orders", "type": "fanout", "durable": true }
+  ],
+  "queues": [
+    { "name": "order.process", "durable": false },
+    { "name": "order.confirmation", "durable": false }
+  ],
+  "bindings": [
+    {
+      "source": "orders",
+      "destination": "order.process",
+      "destination_type": "queue",
+      "routing_key": ""
+    },
+    {
+      "source": "orders",
+      "destination": "order.confirmation",
+      "destination_type": "queue",
+      "routing_key": ""
+    }
+  ]
+}
